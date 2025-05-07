@@ -1,17 +1,51 @@
-#container {
-    background-color: rgb(77, 218, 237);
-    background-size: cover ;
-    border: 5px;
-    border-style: groove;
-    background-attachment: auto;
-    background-size: auto;
- container: fit-content;
-}
-
-h1 {
-    color: salmon;
-}
-
 body {
- float: inline-center ;
-}
+    font-family:  'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    background: linear-gradient(135deg, #6dd6e0, #f1399e, #f6b867);
+    background-size: 400% 400%; 
+    animation: gradientBackground 10s ease infinite; 
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  ul {
+    list-style-type: circle; 
+    padding-left: 0px;    
+    margin: 0;             
+  }
+  
+  li {
+    margin: 5px 0;         
+    padding: 0;           
+    line-height: 1.5;      
+  }
+  
+  li span {
+    margin-left: 10px;     
+  }
+  
+  
+  @keyframes gradientBackground {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+  .container {
+    background: rgba(140, 216, 244, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    text-align: center;
+  }
+  
