@@ -1,0 +1,17 @@
+#container {
+    background-color: rgb(77, 218, 237);
+    background-size: cover ;
+    border: 5px;
+    border-style: groove;
+    background-attachment: auto;
+    background-size: auto;
+ container: fit-content;
+}
+
+h1 {
+    color: salmon;
+}
+
+body {
+ float: inline-center ;
+}
