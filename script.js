@@ -1,43 +1,109 @@
-const startTxt = document.querySelector("#startBox")
-const startBtn = document.querySelector("#startBtn")
-const container = document.querySelector("#container")
 
-startBtn.addEventListener('click', function() {
-    const subcontainer = document.createElement('div')
+const taskInput = document.getElementById("taskInput");
+const addTaskBtn = document.getElementById("addTaskBtn");
+const taskList = document.getElementById("taskList");
 
-    const checkbox = document.createElement('input')
-    checkbox.type = 'checkbox'
 
-    const updateBox = document.createElement('input')
-    updateBox.type = 'text'
-    updateBox.value = startTxt.value
+document.addEventListener("DOMContentLoaded", loadTasks);
 
-    
-    const updateBtn = document.createElement('button')
-    updateBtn.textContent = "Update"
-    updateBtn.addEventListener('click', function() {
-        updateBox.value = startTxt.value  
-        alert('Your notes are now updated')
-    })
 
-    
-    const deleteBtn = document.createElement('button')
-    deleteBtn.textContent = "Delete"
-    deleteBtn.addEventListener('click', function() {
-        subcontainer.remove()  
-    })
+function addTask() {
+  const taskText = taskInput.value.trim();
+  if (taskText === "") return alert("Task cannot be empty!");
 
-    deleteBtn.addEventListener('click',function() {
-       startTxt.value=null
-    })
+  
+  const task = { text: taskText, completed: false };
+  addTaskToDOM(task);
 
-    startBtn.addEventListener('click',(){
-        startTxt.value=''
-    })
+  saveTaskToLocalStorage(task);
 
-    
-    subcontainer.append(checkbox, updateBox, updateBtn, deleteBtn)
+ 
+  taskInput.value = "";
+}
 
-    
-    container.append(subcontainer)
-})
+
+function addTaskToDOM(task) {
+
+  const li = document.createElement("li");
+  if (task.completed) li.classList.add("completed");
+
+
+  const span = document.createElement("span");
+  span.textContent = task.text;
+
+
+  const buttonContainer = document.createElement("div");
+  buttonContainer.classList.add("task-btns");
+
+
+  const completeBtn = document.createElement("button");
+  completeBtn.textContent = "Complete";
+  completeBtn.classList.add("complete");
+  completeBtn.addEventListener("click", () => {
+    li.classList.toggle("completed");
+    updateTaskStatusInLocalStorage(task.text);
+  });
+
+  const deleteBtn = document.createElement("button");
+  deleteBtn.textContent = "Delete";
+  deleteBtn.classList.add("delete");
+  deleteBtn.addEventListener("click", () => {
+    li.remove();
+    deleteTaskFromLocalStorage(task.text);
+  });
+
+  buttonContainer.appendChild(completeBtn);
+  buttonContainer.appendChild(deleteBtn);
+
+  li.appendChild(span);
+  li.appendChild(buttonContainer);
+
+  taskList.appendChild(li);
+}
+
+function saveTaskToLocalStorage(task) {
+  const tasks = getTasksFromLocalStorage();
+  tasks.push(task);
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+
+function getTasksFromLocalStorage() {
+  return JSON.parse(localStorage.getItem("tasks")) || [];
+}
+
+function loadTasks() {
+  const tasks = getTasksFromLocalStorage();
+  tasks.forEach((task) => addTaskToDOM(task));
+}
+
+
+function updateTaskStatusInLocalStorage(taskText) {
+  const tasks = getTasksFromLocalStorage();
+  const updatedTasks = tasks.map((task) => {
+    if (task.text === taskText) {
+      task.completed = !task.completed;
+    }
+    return task;
+  });
+  localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+}
+
+
+function deleteTaskFromLocalStorage(taskText) {
+  const tasks = getTasksFromLocalStorage();
+  const filteredTasks = tasks.filter((task) => task.text !== taskText);
+  localStorage.setItem("tasks", JSON.stringify(filteredTasks));
+}
+
+
+addTaskBtn.addEventListener("click", addTask);
+taskInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") addTask();
+});
+
+
+ 
+
+
+
